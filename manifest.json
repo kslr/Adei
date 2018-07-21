@@ -1,0 +1,30 @@
+{
+  "name": "Nyaa Peel",
+  "version": "1.0",
+  "description": "Automatically load the outer chain picture",
+  "manifest_version": 2,
+  "permissions":
+  [
+    "tabs"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://nyaa.si/view/*",
+        "https://sukebei.nyaa.si/view/*",
+        "http://www.imgbabes.com/*"
+      ],
+      "js": [
+        "vendor/jquery.min.js",
+        "work.js"
+      ],
+      "run_at": "document_end"
+    }
+  ]
+}
