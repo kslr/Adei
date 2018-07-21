@@ -1,8 +1,9 @@
 {
-  "name": "Nyaa Peel",
+  "name": "__MSG_appName__",
   "version": "1.0",
-  "description": "Automatically load the outer chain picture",
+  "description": "__MSG_appDesc__",
   "manifest_version": 2,
+  "default_locale": "en",
   "permissions":
   [
     "tabs"
