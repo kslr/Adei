@@ -79,6 +79,8 @@ if (_.isUndefined(_.find(sites, ["domain", currentHost]))) {
         case "imgwallet.com":
         case "imgdrive.net":
             // https://sukebei.nyaa.si/view/2523825
+            $(".iframecti #redirect-wait").hide();
+            $(".iframecti #redirect-close").show();
             let btn = selector("a.overlay_ad_link");
             if (btn) {
                 btn.click();
