@@ -1,27 +1,36 @@
 chrome.runtime.onMessage.addListener(
     function (request, sender) {
 
-        function onCallback(id, url) {
-            chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-                chrome.tabs.sendMessage(tabs[0].id, {
-                    url: url
+        function onFill(tabId, src) {
+            let data = localStorage.getItem(tabId);
+            if (data !== null) {
+                let aims = JSON.parse(data);
+                chrome.tabs.sendMessage(aims.originTab, {
+                    src: src,
+                    href: aims.href
                 });
-            });
-            chrome.tabs.remove(id);
+            }
         }
 
         switch (request.type) {
-            case 'newTabs':
+            case 'newTab':
                 chrome.tabs.create({
-                    url: request.url,
-                    selected: false
+                    url: request.href,
+                    selected: false,
+                    // pinned: true
                 }, function (tab) {
-                    if (request.direct) {
+                    localStorage.setItem(tab.id, JSON.stringify({
+                        originTab: sender.tab.id,
+                        href: request.href
+                    }));
+
+                    if (request.payload.redirect) {
                         let flag = setInterval(function () {
                             chrome.tabs.get(tab.id, function (newTab) {
                                 if (newTab.status === 'complete') {
                                     clearInterval(flag);
-                                    onCallback(newTab.id, newTab.url);
+                                    onFill(tab.id, newTab.url);
+                                    chrome.tabs.remove(tab.id);
                                 }
                             })
                         }, 1500)
@@ -29,6 +38,7 @@ chrome.runtime.onMessage.addListener(
                 });
                 break;
             case 'closeTab':
-                onCallback(sender.tab.id, request.url);
+                onFill(sender.tab.id, request.src);
+                chrome.tabs.remove(sender.tab.id);
         }
     });

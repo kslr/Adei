@@ -6,7 +6,8 @@
   "default_locale": "en",
   "permissions":
   [
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "background": {
     "scripts": [
@@ -17,15 +18,15 @@
   "content_scripts": [
     {
       "matches": [
-        "https://nyaa.si/view/*",
-        "https://sukebei.nyaa.si/view/*",
-        "http://www.imgbabes.com/*"
+        "http://*/*",
+        "https://*/*"
       ],
       "js": [
         "vendor/jquery.min.js",
-        "work.js"
-      ],
-      "run_at": "document_end"
+        "vendor/js.cookie.min.js",
+        "vendor/lodash.js",
+        "scan.js"
+      ]
     }
   ]
 }
